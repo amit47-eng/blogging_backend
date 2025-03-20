@@ -2,7 +2,7 @@ const express = require("express");
 const { createArticle } = require("../Controllers/article.controller");
 const multer = require("multer");
 
-const router = express.Router(); // ✅ Correct way to create a router
+const articleRouter = express.Router(); // ✅ Correct way to create a router
 
 // Multer Configuration for Image Uploads
 const storage = multer.diskStorage({
@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // API Route with Image Upload
-router.post("/createArticle", upload.single("article_image"), createArticle);
 
-// ✅ Correct export
-module.exports = router; 
+articleRouter.post("/createArticle",upload.single("article_image"), createArticle);
+
+module.exports = { articleRouter }; 

@@ -3,6 +3,8 @@ const {User} = require("../Models/user.model")
 
 const createArticle = async (req, res) => {
   try {
+    
+  
     const { article_title, article_description, user, tags } = req.body;
     const article_image_url = req.file ? `/uploads/${req.file.filename}` : ""; // Get image URL
 
@@ -12,6 +14,7 @@ const createArticle = async (req, res) => {
     if (!article_description || article_description.length < 10) {
       return res.status(400).json({ message: "Description must be at least 10 characters long." });
     }
+
 
     const newArticle = new Article({
       article_title,
