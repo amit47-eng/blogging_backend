@@ -2,9 +2,9 @@ var express = require("express");
 var app = express();
 var dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
-const { dbConfig } = require("./Configurations/db.config");
-const { userRouter } = require("./Routers/user.routes");
-const articleRouter = require("./Routers/article.routes");
+const { dbConfig } = require("../Configurations/db.config");
+const { userRouter } = require("../Routers/user.routes");
+const articleRouter = require("../Routers/article.routes");
 
 
 dotenv.config();
@@ -18,8 +18,10 @@ let PORT = process.env.PORT || 3000;
 
 app.use("/api/v1/user", userRouter);
 app.use("/uploads", express.static("uploads")); // Serve uploaded images
-
 app.use("/api", articleRouter);
+app.get("/api/hello", (req, res) => {
+  res.json({ message: "Backend running on Vercel!" });
+});
 
 
 app.listen(PORT, () => {
