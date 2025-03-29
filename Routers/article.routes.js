@@ -1,23 +1,39 @@
 const express = require("express");
-const { createArticle } = require("../Controllers/article.controller");
 const multer = require("multer");
+const path = require("path");
+const { createArticle } = require("../Controllers/article.controller");
 
-const articleRouter = express.Router(); // ✅ Correct way to create a router
+const articleRouter = express.Router(); // ✅ Define the router first
 
-// Multer Configuration for Image Uploads
+// Ensure 'uploads' directory exists
+const fs = require("fs");
+const uploadDir = path.join(__dirname, "../uploads");
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+articleRouter.get("/articles", async (req, res) => {
+  try {
+    const articles = await ArticleModel.find();
+    res.status(200).json(articles);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching articles", error });
+  }
+});
+
+// Multer Storage Configuration
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "uploads/"); // Save images in the 'uploads' folder
+    cb(null, uploadDir);
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname);
+    cb(null, Date.now() + path.extname(file.originalname));
   },
 });
 
 const upload = multer({ storage: storage });
 
-// API Route with Image Upload
+// ✅ Define the route using `articleRouter`
+articleRouter.post("/createArticle", upload.single("article_image"), createArticle);
 
-articleRouter.post("/createArticle",upload.single("article_image"), createArticle);
-
-module.exports = { articleRouter }; 
+module.exports = articleRouter; // ✅ Export the router

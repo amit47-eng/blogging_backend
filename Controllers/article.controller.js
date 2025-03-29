@@ -3,10 +3,13 @@ const {User} = require("../Models/user.model")
 
 const createArticle = async (req, res) => {
   try {
-    
-  
     const { article_title, article_description, user, tags } = req.body;
-    const article_image_url = req.file ? `/uploads/${req.file.filename}` : ""; // Get image URL
+    
+    if (!req.file) {
+      return res.status(400).json({ message: "Image is required" });
+    }
+
+    const article_image_url = `/uploads/${req.file.filename}`; // Get image URL
 
     if (!article_title || article_title.length < 10) {
       return res.status(400).json({ message: "Title must be at least 10 characters long." });
@@ -14,7 +17,6 @@ const createArticle = async (req, res) => {
     if (!article_description || article_description.length < 10) {
       return res.status(400).json({ message: "Description must be at least 10 characters long." });
     }
-
 
     const newArticle = new Article({
       article_title,
@@ -28,9 +30,11 @@ const createArticle = async (req, res) => {
     res.status(201).json({ message: "Article created successfully!", article: newArticle });
   } catch (error) {
     console.error("Error creating article:", error);
-    res.status(500).json({ message: "Server error", error: error.message });
+    res.status(500).json({ message: "Upload failed", error: error.message });
   }
 };
+
+
 
 function getPosts(req, res) {
   Article.find()

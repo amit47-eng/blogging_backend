@@ -4,7 +4,8 @@ var dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const { dbConfig } = require("./Configurations/db.config");
 const { userRouter } = require("./Routers/user.routes");
-const { articleRouter } = require("./Routers/article.routes"); 
+const articleRouter = require("./Routers/article.routes");
+
 
 dotenv.config();
 
@@ -16,7 +17,8 @@ app.use(cookieParser());
 let PORT = process.env.PORT || 3000;
 
 app.use("/api/v1/user", userRouter);
-app.use("/uploads", express.static("uploads"));
+app.use("/uploads", express.static("uploads")); // Serve uploaded images
+
 app.use("/api", articleRouter);
 
 
