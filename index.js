@@ -2,9 +2,9 @@ var express = require("express");
 var app = express();
 var dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
-const { dbConfig } = require("../Configurations/db.config");
-const { userRouter } = require("../Routers/user.routes");
-const articleRouter = require("../Routers/article.routes");
+const { dbConfig } = require("./Configurations/db.config");
+const { userRouter } = require("./Routers/user.routes");
+const articleRouter = require("./Routers/article.routes");
 
 
 dotenv.config();
