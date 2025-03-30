@@ -24,4 +24,4 @@ dist-ssr
 *.sw?
 Configurations/serviceAccountKey.json
 *.env.local
-*.env.development.local
+*.env.development.localConfigurations/serviceAccountKey.json
